@@ -1,9 +1,17 @@
 package com.example.learn.model;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+//import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+//import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="user")
@@ -12,8 +20,9 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@Column(name="username", length = 50, nullable = false, unique = true)
+	@NotEmpty @Column(name="username", length = 50, nullable = false, unique = true)
 	private String username;
+	@Size(min=2, message="First name should have atleast 2 characters")
 	@Column(name="firstname", length = 50, nullable = false)
 	private String firstname;
 	@Column(name="lastname", length = 50, nullable = false)
@@ -24,7 +33,13 @@ public class User {
 	private String role;
 	@Column(name="ssn", length = 50, nullable = false, unique = true)
 	private String ssn;
+	
+//	@OneToOne(mappedBy = "user")
+//	private Order order;
 
+	 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+		    private List<Order> order ;
+	
 	public User() {
 	}
 
@@ -38,6 +53,8 @@ public class User {
 		this.ssn = ssn;
 	}
 
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -100,5 +117,21 @@ public class User {
 				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
 	}
 	
+	//	public Order getOrder() {
+	//	return order;
+	//}
+	//public void setOrder(Order order) {
+	//	this.order = order;
+	//}
+	
+	public List<Order> getOrder() {
+		return order;
+	}
+
+	public void setOrder(List<Order> order) {
+		this.order = order;
+	}
+
+
 	
 }
