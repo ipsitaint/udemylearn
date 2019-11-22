@@ -26,6 +26,11 @@ import com.example.learn.exception.userExistsException;
 import com.example.learn.model.User;
 import com.example.learn.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags="User Management Restful Api", value = "UserController")
 @RestController
 @RequestMapping(value="/api/users")
 public class UserController {
@@ -33,13 +38,15 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping
+	@ApiOperation(value = "Retrieve List of users")
+	@GetMapping()
 	public List<User> getAllUser(){
 		return userService.getAllUsers();
 	}
 	
+	@ApiOperation(value = "Create a new user")
 	@PostMapping
-	public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
+	public ResponseEntity<Void> createUser(@ApiParam("User information for a new user to be created.") @Valid @RequestBody User user, UriComponentsBuilder builder) {
 		try {
 			
 //			user.setOrder(user.getOrder());
@@ -57,15 +64,33 @@ public class UserController {
 		}
 	}
 	
+	@ApiOperation(value = "Get user by their ID")
 	@GetMapping("/{id}")
-	public Optional<User> getUserById(@PathVariable("id") Long id){
+	public User getUserById(@PathVariable("id") Long id){
 		try {
-		return userService.getUserById(id);
+		 Optional<User> userOptional = userService.getUserById(id);
+		 return userOptional.get();
 		}
 		catch(UserNotFoundException ux) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,ux.getMessage());
 		}
 	}
+	
+//	@GetMapping("/{id}")
+//	public EntityModel<User> getUserById(@PathVariable("id") Long id){
+//		try {
+//		 Optional<User> userOptional = userService.getUserById(id);
+//		 User user = userOptional.get();
+//		 Long userid = user.getId();
+//		 String k = this.getClass()+"/"+userid;
+//		 user.add(new Link(k));
+//		 EntityModel<User> finalEntity = new EntityModel<User>(user);
+//		 return finalEntity;
+//		}
+//		catch(UserNotFoundException ux) {
+//			throw new ResponseStatusException(HttpStatus.NOT_FOUND,ux.getMessage());
+//		}
+//	}
 	
 	@PutMapping("/{id}")
 	public User updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
@@ -83,8 +108,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/byusername/{username}")
-	public Optional<User> findByUsername(@PathVariable("username") String username) {
-		Optional<User> user = userService.getUserByUsername(username);
-		return user;
+	public User findByUsername(@PathVariable("username") String username) {
+		Optional<User> userOptional = userService.getUserByUsername(username);
+		return userOptional.get();
 	}
 }

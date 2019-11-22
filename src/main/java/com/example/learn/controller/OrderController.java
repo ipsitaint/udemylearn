@@ -31,7 +31,6 @@ public class OrderController {
 		}catch(UserNotFoundException ux) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ux.getMessage());
 		}
-		
 	}
 	
 	@PostMapping("/{userid}/orders")
@@ -43,13 +42,24 @@ public class OrderController {
 		}
 	}
 	
+//	@GetMapping("{userid}/orders/{orderid}")
+//	public Optional<Order> getSpecificOrderUsingOrderId(@PathVariable("userid") Long userid, @PathVariable("orderid") Long orderid){
+//		try {
+//			return orderService.getSpecificOrderUsingOrderId(userid,orderid);
+//		}catch(UserNotFoundException ux) {
+//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ux.getMessage());
+//		}
+//	}
+	
 	@GetMapping("{userid}/orders/{orderid}")
-	public Optional<Order> getSpecificOrderUsingOrderId(@PathVariable("userid") Long userid, @PathVariable("orderid") Long orderid){
+	public Order getSpecificOrderUsingOrderId(@PathVariable("userid") Long userid, @PathVariable("orderid") Long orderid){
 		try {
-			return orderService.getSpecificOrderUsingOrderId(userid,orderid);
+			Optional<Order> orderOptional = orderService.getSpecificOrderUsingOrderId(userid,orderid);
+			return orderOptional.get();
 		}catch(UserNotFoundException ux) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ux.getMessage());
 		}
 	}
+	
 	
 }

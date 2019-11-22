@@ -13,16 +13,24 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+//import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "This model is to create users.")
 @Entity
 @Table(name="user")
 public class User {
-	
-	@Id
+	@ApiModelProperty(notes = "Auto generated unique ID", required = true, position = 1)
+	@Id	
 	@GeneratedValue
 	private Long id;
 	@NotEmpty @Column(name="username", length = 50, nullable = false, unique = true)
 	private String username;
-	@Size(min=2, message="First name should have atleast 2 characters")
+	@Size(min=2, max=50, message="First name should have atleast 2 characters")
 	@Column(name="firstname", length = 50, nullable = false)
 	private String firstname;
 	@Column(name="lastname", length = 50, nullable = false)
@@ -32,9 +40,10 @@ public class User {
 	@Column(name="role", length = 50, nullable = false)
 	private String role;
 	@Column(name="ssn", length = 50, nullable = false, unique = true)
+	@JsonIgnore
 	private String ssn;
 	
-//	@OneToOne(mappedBy = "user")
+//	@OneToOne(mappedBy = "user") 
 //	private Order order;
 
 	 @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -111,7 +120,6 @@ public class User {
 		this.ssn = ssn;
 	}
 
-	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", firstname=" + firstname + ", lastname=" + lastname
 				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
