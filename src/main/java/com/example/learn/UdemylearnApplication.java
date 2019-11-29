@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,7 +13,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import com.example.learn.property.FileStorageProperties;
+
 @SpringBootApplication
+
+@EnableConfigurationProperties({
+    FileStorageProperties.class
+})
+
 @Configuration
 public class UdemylearnApplication implements WebMvcConfigurer{
 

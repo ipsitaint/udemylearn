@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 
 //import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -40,7 +40,7 @@ public class User {
 	@Column(name="role", length = 50, nullable = false)
 	private String role;
 	@Column(name="ssn", length = 50, nullable = false, unique = true)
-	@JsonIgnore
+//	@JsonIgnore
 	private String ssn;
 	
 //	@OneToOne(mappedBy = "user") 
